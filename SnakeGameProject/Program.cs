@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace SnakeGameProject
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args) //Rochelle's copy
         {
+            ProgramUI ui = new ProgramUI();
+            ui.Run();
         }
     }
 }
