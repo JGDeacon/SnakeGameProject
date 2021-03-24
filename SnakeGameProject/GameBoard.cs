@@ -11,6 +11,7 @@ namespace SnakeGameProject
         //Generate Item Locations
         List<ItemLocations> gameItems = new List<ItemLocations>();
         List<ItemLocations> snake = new List<ItemLocations>();
+        int score = 0;
         public void StartGame(GameOptions gameOptions)
         {
 
@@ -18,19 +19,26 @@ namespace SnakeGameProject
             //{
             //    gameItems.Add(AddGameItems(gameOptions));
             //}
-            ItemLocations newSnake = new ItemLocations(2,2,"Snake",'$');
+            ItemLocations appleOne = new ItemLocations(4, 5, "Apple", '@');
+            ItemLocations appleTwo = new ItemLocations(14, 9, "Apple", '@');
+            ItemLocations appleThree = new ItemLocations(7, 13, "Apple", '@');
+            gameItems.Add(appleOne);
+            gameItems.Add(appleTwo);
+            gameItems.Add(appleThree);
+            ItemLocations newSnake = new ItemLocations(2, 2, "Snake", '$');
             snake.Add(newSnake);
             DrawBoard(gameOptions);
         }
 
-        
+
 
         //We may want to investigate setting the window size.
         public void DrawBoard(GameOptions gameOptions)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 55; i++)
             {
                 //Console.ReadLine();
+                Console.WriteLine($"Score: {score}");
                 DrawBoardTop(gameOptions.BoardWidth);
                 DrawBoardLine(gameOptions.BoardWidth, gameOptions.BoardHeight);
                 DrawBoardBottom(gameOptions.BoardWidth);
@@ -52,10 +60,63 @@ namespace SnakeGameProject
                         break;
 
                 }
+                //CheckCollision(snake);
+                bool EatFruit = CheckForFruit(snake, gameOptions);
+                if (EatFruit)
+                {
+                    ItemLocations itemToRemove = GetItem(snake[0].XAxis, snake[0].YAxis);
+                    gameItems.Remove(itemToRemove);
+                    while (gameItems.Count < 3)
+                    {
+                        gameItems.Add(AddGameItems(gameOptions));
+                        RemoveNullItems();
+                    }
+                }
+                Console.Clear();
             }
         }
 
-        
+        private void RemoveNullItems()
+        {
+            List<ItemLocations> nullItems = new List<ItemLocations>();
+            foreach (ItemLocations item in gameItems)
+            {
+                if (item == null)
+                {
+                    nullItems.Add(item);
+                }
+            }
+            foreach (ItemLocations deleteItem in nullItems)
+            {
+                gameItems.Remove(deleteItem);
+            }
+
+        }
+
+        private ItemLocations GetItem(int xAxis, int yAxis)
+        {
+            foreach (ItemLocations item in gameItems)
+            {
+                if (item.XAxis == xAxis && item.YAxis == yAxis)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        private bool CheckForFruit(List<ItemLocations> snake, GameOptions gameOptions)
+        {
+            foreach (ItemLocations item in gameItems)
+            {
+                if (item.XAxis == snake[0].XAxis && item.YAxis == snake[0].YAxis)
+                {
+                    score = score + 10;
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private void DrawBoardTop(int boardWidth)
         {
@@ -74,8 +135,8 @@ namespace SnakeGameProject
             string row = "";
             for (int y = 1; y <= boardHeight; y++)
             {
-                    row = row + "|";
-                
+                row = row + "|";
+
                 for (int x = 1; x <= boardWidth; x++)
                 {
                     bool isSnake = CheckForSnake(x, y);
@@ -141,9 +202,9 @@ namespace SnakeGameProject
                         return item;
                     }
                 }
-                return null;
             }
-            
+            return null;
+
 
         }
         private bool CheckForSnake(int x, int y)
@@ -162,7 +223,7 @@ namespace SnakeGameProject
 
         private bool CheckForFruit(int x, int y)
         {
-            bool result=false;
+            bool result = false;
             foreach (ItemLocations item in gameItems)
             {
                 if (x == item.XAxis && y == item.YAxis)
@@ -173,7 +234,10 @@ namespace SnakeGameProject
             }
             return result;
         }
-
+        private void CheckCollision(List<ItemLocations> snake)
+        {
+            throw new NotImplementedException();
+        }
 
         public GameBoard()
         {
