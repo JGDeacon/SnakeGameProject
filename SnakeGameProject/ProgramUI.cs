@@ -9,7 +9,7 @@ namespace SnakeGameProject
     public class ProgramUI
     {
         GameBoard currentGame = new GameBoard();
-        GameOptions currentOptions = new GameOptions();
+       public GameOptions currentOptions = new GameOptions(GameBoardSize.small, GameDifficulty.easy);
 
         public void Run()
         {

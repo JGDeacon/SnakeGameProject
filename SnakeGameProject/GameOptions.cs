@@ -36,16 +36,16 @@ namespace SnakeGameProject
             switch (gameBoardSize)
             {
                 case GameBoardSize.small:
-                    value = 20;
+                    value = 18;
                     return value;
                 case GameBoardSize.medium:
-                    value = 30;
+                    value = 21;
                     return value;
                 case GameBoardSize.large:
-                    value = 40;
+                    value = 25;
                     return value;
                 default:
-                    value = 20;
+                    value = 18;
                     return value;
             }
         }
