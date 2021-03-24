@@ -10,23 +10,49 @@ namespace SnakeGameProject
     {
         //Generate Item Locations
         List<ItemLocations> gameItems = new List<ItemLocations>();
+        List<ItemLocations> snake = new List<ItemLocations>();
+        public void StartGame(GameOptions gameOptions)
+        {
+
+            //while (gameItems.Count < 3)
+            //{
+            //    gameItems.Add(AddGameItems(gameOptions));
+            //}
+            ItemLocations newSnake = new ItemLocations(2,2,"Snake",'$');
+            snake.Add(newSnake);
+            DrawBoard(gameOptions);
+        }
+
+        
 
         //We may want to investigate setting the window size.
         public void DrawBoard(GameOptions gameOptions)
         {
-            while (gameItems.Count < 3)
+            for (int i = 0; i < 10; i++)
             {
+                //Console.ReadLine();
+                DrawBoardTop(gameOptions.BoardWidth);
+                DrawBoardLine(gameOptions.BoardWidth, gameOptions.BoardHeight);
+                DrawBoardBottom(gameOptions.BoardWidth);
+                var move = Console.ReadKey(true).Key;
+                switch (move)
+                {
 
-                gameItems.Add(AddGameItems(gameOptions));
+                    case ConsoleKey.LeftArrow:
+                        snake[0].XAxis = snake[0].XAxis - 1;
+                        break;
+                    case ConsoleKey.UpArrow:
+                        snake[0].YAxis = snake[0].YAxis - 1;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        snake[0].XAxis = snake[0].XAxis + 1;
+                        break;
+                    case ConsoleKey.DownArrow:
+                        snake[0].YAxis = snake[0].YAxis + 1;
+                        break;
+
+                }
             }
-            foreach (ItemLocations item in gameItems) //testing only lines 21-24
-            {
-                Console.WriteLine($" X: {item.XAxis}, Y: {item.YAxis}, Name: {item.ItemName}, Item Icon: {item.ItemIcon}");
-            }
-            //Console.ReadLine();
-            DrawBoardTop(gameOptions.BoardWidth);
-            DrawBoardLine(gameOptions.BoardWidth, gameOptions.BoardHeight);
-            DrawBoardBottom(gameOptions.BoardWidth);
         }
 
         
@@ -46,7 +72,7 @@ namespace SnakeGameProject
         private void DrawBoardLine(int boardWidth, int boardHeight)
         {
             string row = "";
-            for (int y = 0; y < boardHeight; y++)
+            for (int y = 1; y <= boardHeight; y++)
             {
                     row = row + "|";
                 
@@ -83,6 +109,11 @@ namespace SnakeGameProject
             Console.WriteLine(bottom);
         }
 
+        private ItemLocations AddSnake()
+        {
+            ItemLocations snakeHead = new ItemLocations(2, 2, "Snake", '$');
+            return snakeHead;
+        }
         private ItemLocations AddGameItems(GameOptions gameOptions)
         {
             ItemLocations item;
@@ -117,7 +148,16 @@ namespace SnakeGameProject
         }
         private bool CheckForSnake(int x, int y)
         {
-            return false;
+            bool result = false;
+            foreach (ItemLocations item in snake)
+            {
+                if (x == item.XAxis && y == item.YAxis)
+                {
+
+                    result = true;
+                }
+            }
+            return result;
         }
 
         private bool CheckForFruit(int x, int y)

@@ -13,7 +13,7 @@ namespace SnakeGameProject
 
         public void Run()
         {
-            currentGame.DrawBoard(currentOptions);
+            currentGame.StartGame(currentOptions);
             Console.ReadKey();
         }
     }
