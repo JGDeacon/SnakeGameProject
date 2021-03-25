@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,26 +16,26 @@ namespace SnakeGameProject
         List<ItemLocations> gameItems = new List<ItemLocations>();
         private readonly SnakeRepo snakeRepo = new SnakeRepo();
         int score = 0;
-        int highScore = 0; //<- needs to pull from the High Score list and display on the game board #############################
         int gameSpeed = 0;
+        
         public void StartGame(GameOptions gameOptions)
         {
             switch (gameOptions.Difficulty)
             {
                 case GameDifficulty.easy:
-                    gameSpeed = 600;
+                    gameSpeed = 400;
                     break;
                 case GameDifficulty.medium:
-                    gameSpeed = 450;
+                    gameSpeed = 250;
                     break;
                 case GameDifficulty.hard:
-                    gameSpeed = 300;
+                    gameSpeed = 100;
                     break;
                 default:
                     gameSpeed = 600;
                     break;
             }
-
+            Console.SetWindowSize(gameOptions.BoardWidth + 13, gameOptions.BoardHeight + 10);
             while (gameItems.Count < 3)
             {
                 gameItems.Add(AddGameItems(gameOptions));
@@ -53,7 +55,7 @@ namespace SnakeGameProject
             {
                 Console.WriteLine();
                 Console.WriteLine();
-                Console.WriteLine($"     Score: {score}     High Score: xxxxx");
+                Console.WriteLine($"     Score: {score}     High Score: {HighScore.Score}");
                 DrawBoardTop(gameOptions.BoardWidth);
                 DrawBoardLine(gameOptions.BoardWidth, gameOptions.BoardHeight);
                 DrawBoardBottom(gameOptions.BoardWidth);
@@ -91,20 +93,24 @@ namespace SnakeGameProject
                         gameItems.Add(AddGameItems(gameOptions));
                         RemoveNullItems();
                     }
-
+                    EatFruitSound();
                     snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0)));
                 }
 
                 Thread.Sleep(gameSpeed); // <- Needs to be set with the difficulty paramater #################################
                 Console.Clear();
             }
-            Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
 
-            Console.WriteLine("Congratulations! You've achieved a high score. Please enter your name:");
-            var UserNameInput = Console.ReadLine();
-            string userScore = HighScore.ShowPlayerScore(UserNameInput, score);
-            Console.WriteLine("??");
-            Console.WriteLine($"{userScore}");
+            Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
+            DeathSound();
+            if (score > HighScore.Score)
+            {
+                Console.WriteLine("Congratulations! \n" +
+                    "You've achieved a high score!");
+                HighScore.Score = score;
+            }
+            snakeRepo.RemoveWholeSnake();
+            score = 0;
             Console.ReadLine();
         }
 
@@ -255,7 +261,6 @@ namespace SnakeGameProject
                 {
                     if (xAxis == itemLocation.XAxis && yAxis == itemLocation.YAxis)
                     {
-                        Console.WriteLine($"X: {xAxis}, Y: {yAxis}");
                         break;
                     }
                     else
@@ -339,6 +344,16 @@ namespace SnakeGameProject
         {
 
         }
-
+        private void EatFruitSound()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"c:\Windows\Media\notify.wav");
+            simpleSound.Play();
+        }
+        private void DeathSound()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            SoundPlayer deadSound = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGameProject.hahaDead.mp3"));
+            deadSound.Play();
+        }
     }
 }

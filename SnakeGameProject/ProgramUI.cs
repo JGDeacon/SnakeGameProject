@@ -9,7 +9,6 @@ namespace SnakeGameProject
     public class ProgramUI
     {
         GameBoard currentGame = new GameBoard();
-        HighScoreRepo highScoreRepo = new HighScoreRepo();
         public GameOptions currentOptions = new GameOptions(GameBoardSize.small, GameDifficulty.easy);
 
         string userName = "";
@@ -18,18 +17,19 @@ namespace SnakeGameProject
         public void RunApplication()
         {
             bool isRunning = true;
-            highScoreRepo.SeedScores();
+            HighScore.Score = 50;
             while (isRunning)
             {
-                Console.WindowWidth = 
+
                 Console.WriteLine("Welcome to the Insatiably Hungry Snake Game! \n" +
                     $"1. Play on board size {currentOptions.BoardSize} at difficulty level {currentOptions.Difficulty}. \n" +
                     "2. Choose Board Size \n" +
                     "3. Set Game Difficulty \n" +
-                    "4. Show High Scores \n" +
+                    "4. Show High Score \n" +
                     "5. Rules \n" +
                     "6. Authors \n" +
                     "7. Exit Game");
+
 
                 string userInput = Console.ReadLine();
 
@@ -86,14 +86,8 @@ namespace SnakeGameProject
                         Console.Clear();
                         break;
                     case "4":
-                        Console.WriteLine("Top 
-                        List<HighScore> topFive = HighScoreRepo.GetListOfHighScores();
-                        foreach (HighScore item in topFive)
-                        {
-
-                            Console.WriteLine($"Name: {item.DisplayName} Score: {item.DisplayScore}");
-                        }
-
+                        Console.Clear();
+                        Console.WriteLine($"Sessions Corrent Highscore: {HighScore.Score}"); 
                         Console.ReadKey();
                         Console.Clear();
                         break;
@@ -134,6 +128,7 @@ namespace SnakeGameProject
                     case "7":
                         isRunning = false;
                         break;
+
                 }
             }
         }
