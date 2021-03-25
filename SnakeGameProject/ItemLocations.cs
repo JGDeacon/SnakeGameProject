@@ -12,6 +12,7 @@ namespace SnakeGameProject
         public int YAxis { get; set; }
         public string ItemName { get; set; } //I think this can be done better through inheritence
         public Char ItemIcon { get; set; }
+        public int PointValue { get; set; }
 
         public ItemLocations()
         {
@@ -23,6 +24,14 @@ namespace SnakeGameProject
             YAxis = yAxis;
             ItemName = itemName;
             ItemIcon = itemIcon;
+        }
+        public ItemLocations(int xAxis, int yAxis, string itemName, Char itemIcon,int pointValue)
+        {
+            XAxis = xAxis;
+            YAxis = yAxis;
+            ItemName = itemName;
+            ItemIcon = itemIcon;
+            PointValue = pointValue;
         }
     }
 }
