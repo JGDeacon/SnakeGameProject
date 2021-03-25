@@ -12,9 +12,9 @@ namespace SnakeGameProject
     {
         //Generate Item Locations
         List<ItemLocations> gameItems = new List<ItemLocations>();
-        //List<ItemLocations> snake = new List<ItemLocations>();
         private readonly SnakeRepo snakeRepo = new SnakeRepo();
         int score = 0;
+        int highScore = 0; //<- needs to pull from the High Score list and display on the game board #############################
         public void StartGame(GameOptions gameOptions)
         {
             
@@ -23,32 +23,25 @@ namespace SnakeGameProject
                 gameItems.Add(AddGameItems(gameOptions));
                 RemoveNullItems();
             }
-            //ItemLocations appleOne = new ItemLocations(4, 5, "Apple", '@');
-            //ItemLocations appleTwo = new ItemLocations(14, 9, "Apple", '@');
-            //ItemLocations appleThree = new ItemLocations(7, 13, "Apple", '@');
-            //gameItems.Add(appleOne);
-            //gameItems.Add(appleTwo);
-            //gameItems.Add(appleThree);
-            ItemLocations newSnake = new ItemLocations(1, 1, "Snake", '§');
             snakeRepo.CreateSnake();
             DrawBoard(gameOptions);
         }
 
-
-
         //We may want to investigate setting the window size.
+
+        //DrawBoard is the turn mechanism for the game.
         public void DrawBoard(GameOptions gameOptions)
         {
-            
             bool dead = false;
             while (dead == false)
             {
-                //Console.ReadLine();
-                Console.WriteLine($"Score: {score}");
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine($"     Score: {score}     High Score: xxxxx");
                 DrawBoardTop(gameOptions.BoardWidth);
                 DrawBoardLine(gameOptions.BoardWidth, gameOptions.BoardHeight);
                 DrawBoardBottom(gameOptions.BoardWidth);
-                if (Console.KeyAvailable)
+                if (Console.KeyAvailable) //This is true if a key has been pressed. This prevents the game for waiting for a key stroke.
                 {
                     var changeDirection = Console.ReadKey(true).Key;
                     switch (changeDirection)
@@ -67,12 +60,11 @@ namespace SnakeGameProject
                             break;
                     }
                 }
-                //snakeRepo.SnakeMove(snakeRepo.GetWholeSnake());
-                snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0)));
-                snakeRepo.RemoveSnake();
+                snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0))); //Creates a new snake object and ADDs it at index 0 to the _gameSnake List, so its the first object in the list.
+                snakeRepo.RemoveSnake(); //Removes the highest index snake object from the _gameSnake list
 
-                //snakeRepo.RemoveTail();
-                dead = CheckCollision(snakeRepo.GetSnake(0), gameOptions);
+                dead = CheckCollision(snakeRepo.GetSnake(0), gameOptions); // Checks for snake collision and death
+                //Remove Fruit, add a new random fruit, and increase score by fruit value.
                 bool EatFruit = CheckForFruit(snakeRepo.GetSnake(0), gameOptions);
                 if (EatFruit)
                 {
@@ -85,58 +77,32 @@ namespace SnakeGameProject
                     }
 
                     snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0)));
-                }
-                Thread.Sleep(300);
+                } 
+
+                Thread.Sleep(300); // <- Needs to be set with the difficulty paramater #################################
                 Console.Clear();
             }
-            Console.WriteLine("You DEAD!");
+            Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
             Console.ReadLine();
         }
-
-        private void RemoveNullItems()
-        {
-            List<ItemLocations> nullItems = new List<ItemLocations>();
-            foreach (ItemLocations item in gameItems)
-            {
-                if (item == null)
-                {
-                    nullItems.Add(item);
-                }
-            }
-            foreach (ItemLocations deleteItem in nullItems)
-            {
-                gameItems.Remove(deleteItem);
-            }
-
-        }
-
-        private ItemLocations GetItem(int xAxis, int yAxis)
-        {
-            foreach (ItemLocations item in gameItems)
-            {
-                if (item.XAxis == xAxis && item.YAxis == yAxis)
-                {
-                    return item;
-                }
-            }
-            return null;
-        }
-
+      
+        //Draw Game Board Methods
         private void DrawBoardTop(int boardWidth)
         {
-            string top = "┌";
+            string top = "     ┌";
             for (int i = 0; i < boardWidth; i++)
             {
                 top = top + "-";
             }
             top = top + "┐";
+            Console.WriteLine();
+            Console.WriteLine();
             Console.WriteLine(top);
 
         }
-
         private void DrawBoardLine(int boardWidth, int boardHeight)
         {
-            string row = "";
+            string row = "     ";
             for (int y = 1; y <= boardHeight; y++)
             {
                 row = row + "|";
@@ -160,12 +126,12 @@ namespace SnakeGameProject
                 }
                 row = row + "|";
                 Console.WriteLine(row);
-                row = "";
+                row = "     ";
             }
         }
         private void DrawBoardBottom(int boardWidth)
         {
-            string bottom = "└";
+            string bottom = "     └";
             for (int i = 0; i < boardWidth; i++)
             {
                 bottom = bottom + "-";
@@ -173,12 +139,61 @@ namespace SnakeGameProject
             bottom = bottom + "┘";
             Console.WriteLine(bottom);
         }
+        private char GetSnakeIcon(int x, int y)
+        {
+            List<Snake> snakeParts = snakeRepo.GetWholeSnake();
+            foreach (Snake snake in snakeParts)
+            {
+                if (x == snake.XAxis && y == snake.YAxis)
+                {
 
-        //private ItemLocations AddSnake()
-        //{
-        //    ItemLocations snakeHead = new ItemLocations(2, 2, "Snake", '$');
-        //    return snakeHead;
-        //}
+                    return snake.SnakeIcon;
+                }
+            }
+            return '$';
+        }
+        private char GetFruitSymbol(int x, int y)
+        {
+
+            foreach (ItemLocations item in gameItems)
+            {
+                if (x == item.XAxis && y == item.YAxis)
+                {
+
+                    return item.ItemIcon;
+                }
+            }
+            return ' ';
+        }
+        private bool CheckForSnake(int x, int y)
+        {
+            bool result = false;
+            List<Snake> snakeParts = snakeRepo.GetWholeSnake();
+            foreach (Snake snake in snakeParts)
+            {
+                if (x == snake.XAxis && y == snake.YAxis)
+                {
+
+                    result = true;
+                }
+            }
+            return result;
+        }
+        private bool CheckForFruit(int x, int y)
+        {
+            bool result = false;
+            foreach (ItemLocations item in gameItems)
+            {
+                if (x == item.XAxis && y == item.YAxis)
+                {
+
+                    result = true;
+                }
+            }
+            return result;
+        } //There are two CheckForFruit Methods. <- Bool is used for drawing the Game Board
+
+        //Add/Remove Food Item Methods
         private ItemLocations AddGameItems(GameOptions gameOptions)
         {
             ItemLocations item;
@@ -232,20 +247,35 @@ namespace SnakeGameProject
 
 
         }
-        private bool CheckForSnake(int x, int y)
+        private void RemoveNullItems()
         {
-            bool result = false;
-            List<Snake> snakeParts = snakeRepo.GetWholeSnake();
-            foreach (Snake snake in snakeParts)
+            List<ItemLocations> nullItems = new List<ItemLocations>();
+            foreach (ItemLocations item in gameItems)
             {
-                if (x == snake.XAxis && y == snake.YAxis)
+                if (item == null)
                 {
-
-                    result = true;
+                    nullItems.Add(item);
                 }
             }
-            return result;
+            foreach (ItemLocations deleteItem in nullItems)
+            {
+                gameItems.Remove(deleteItem);
+            }
+
         }
+        private ItemLocations GetItem(int xAxis, int yAxis)
+        {
+            foreach (ItemLocations item in gameItems)
+            {
+                if (item.XAxis == xAxis && item.YAxis == yAxis)
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        //Scoring/Collision Methods
         private bool CheckForFruit(Snake snake, GameOptions gameOptions)
         {
             foreach (ItemLocations item in gameItems)
@@ -258,41 +288,14 @@ namespace SnakeGameProject
                 }
             }
             return false;
-        }
-        private char GetSnakeIcon(int x, int y)
-        {
-            List<Snake> snakeParts = snakeRepo.GetWholeSnake();
-            foreach (Snake snake in snakeParts)
-            {
-                if (x == snake.XAxis && y == snake.YAxis)
-                {
-                    
-                    return snake.SnakeIcon;
-                }
-            }
-            return '$';
-        }
-
-        private bool CheckForFruit(int x, int y)
-        {
-            bool result = false;
-            foreach (ItemLocations item in gameItems)
-            {
-                if (x == item.XAxis && y == item.YAxis)
-                {
-
-                    result = true;
-                }
-            }
-            return result;
-        }
+        } //There are two CheckForFruit Methods. <- Bool is used for scoring and removing fruit from the Game Board
         private bool CheckCollision(Snake snake,GameOptions gameOptions)
         {
-            if (snake.XAxis == 0 || snake.XAxis ==gameOptions.BoardWidth+1)
+            if (snake.XAxis <= 0 || snake.XAxis >=gameOptions.BoardWidth+1)
             {
                 return true;
             }
-            if (snake.YAxis == 0 || snake.YAxis == gameOptions.BoardHeight+1)
+            if (snake.YAxis <= 0 || snake.YAxis >= gameOptions.BoardHeight+1)
             {
                 return true;
             }
@@ -307,21 +310,9 @@ namespace SnakeGameProject
             
             return false;
 
-        }
-        private char GetFruitSymbol(int x, int y)
-        {
-            
-            foreach (ItemLocations item in gameItems)
-            {
-                if (x == item.XAxis && y == item.YAxis)
-                {
-
-                    return item.ItemIcon;
-                }
-            }
-            return ' ';
-        }
-
+        } //Hit a wall or the snake and you die
+       
+        //Default Constructor
         public GameBoard()
         {
 
