@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -91,15 +93,16 @@ namespace SnakeGameProject
                         gameItems.Add(AddGameItems(gameOptions));
                         RemoveNullItems();
                     }
-
+                    EatFruitSound();
                     snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0)));
                 }
 
                 Thread.Sleep(gameSpeed); // <- Needs to be set with the difficulty paramater #################################
                 Console.Clear();
             }
-            Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
 
+            Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
+            DeathSound();
             if (score > HighScore.Score)
             {
                 Console.WriteLine("Congratulations! \n" +
@@ -341,6 +344,16 @@ namespace SnakeGameProject
         {
 
         }
-
+        private void EatFruitSound()
+        {
+            SoundPlayer simpleSound = new SoundPlayer(@"c:\Windows\Media\notify.wav");
+            simpleSound.Play();
+        }
+        private void DeathSound()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            SoundPlayer deadSound = new SoundPlayer(assembly.GetManifestResourceStream("SnakeGameProject.hahaDead.mp3"));
+            deadSound.Play();
+        }
     }
 }

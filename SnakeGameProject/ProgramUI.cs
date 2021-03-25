@@ -20,6 +20,7 @@ namespace SnakeGameProject
             HighScore.Score = 50;
             while (isRunning)
             {
+
                 Console.WriteLine("Welcome to the Insatiably Hungry Snake Game! \n" +
                     $"1. Play on board size {currentOptions.BoardSize} at difficulty level {currentOptions.Difficulty}. \n" +
                     "2. Choose Board Size \n" +
