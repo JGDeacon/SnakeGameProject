@@ -21,14 +21,15 @@ namespace SnakeGameProject
             highScoreRepo.SeedScores();
             while (isRunning)
             {
+                Console.WindowWidth = 
                 Console.WriteLine("Welcome to the Insatiably Hungry Snake Game! \n" +
                     $"1. Play on board size {currentOptions.BoardSize} at difficulty level {currentOptions.Difficulty}. \n" +
                     "2. Choose Board Size \n" +
                     "3. Set Game Difficulty \n" +
                     "4. Show High Scores \n" +
                     "5. Rules \n" +
-                    "6. Game Options \n" +
-                    "7. Authors");
+                    "6. Authors \n" +
+                    "7. Exit Game");
 
                 string userInput = Console.ReadLine();
 
@@ -85,12 +86,7 @@ namespace SnakeGameProject
                         Console.Clear();
                         break;
                     case "4":
-                        Console.WriteLine("Top 5 Scores of All Time: \n"); //this is for testing and needs removed
-                                                                           //$"1. {userName} scored {userHighScore} \n" +
-                                                                           //$"2. {userName} scored {userHighScore} \n" +
-                                                                           //$"3. {userName} scored {userHighScore} \n" +
-                                                                           //$"4. {userName} scored {userHighScore} \n" +
-                                                                           //$"5. {userName} scored {userHighScore}");
+                        Console.WriteLine("Top 
                         List<HighScore> topFive = HighScoreRepo.GetListOfHighScores();
                         foreach (HighScore item in topFive)
                         {
@@ -125,10 +121,6 @@ namespace SnakeGameProject
                         Console.Clear();
                         break;
                     case "6":
-                        //game options
-                        Console.Clear();
-                        break;
-                    case "7":
                         Console.WriteLine("\n" + "AUTHORS: \n" +
                             "\n" +
                             "Jeff Deacon & Rochelle Deulley \n" +
@@ -139,8 +131,9 @@ namespace SnakeGameProject
                         Console.ReadKey();
                         Console.Clear();
                         break;
-
-
+                    case "7":
+                        isRunning = false;
+                        break;
                 }
             }
         }
