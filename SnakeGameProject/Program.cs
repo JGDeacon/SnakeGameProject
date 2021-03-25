@@ -11,7 +11,7 @@ namespace SnakeGameProject
         static void Main(string[] args) //Rochelle's copy
         {
             ProgramUI ui = new ProgramUI();
-            ui.Run();
+            ui.RunApplication();
         }
     }
 }

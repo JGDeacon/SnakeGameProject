@@ -15,9 +15,25 @@ namespace SnakeGameProject
         private readonly SnakeRepo snakeRepo = new SnakeRepo();
         int score = 0;
         int highScore = 0; //<- needs to pull from the High Score list and display on the game board #############################
+        int gameSpeed = 0;
         public void StartGame(GameOptions gameOptions)
         {
-            
+            switch (gameOptions.Difficulty)
+            {
+                case GameDifficulty.easy:
+                    gameSpeed = 600;
+                    break;
+                case GameDifficulty.medium:
+                    gameSpeed = 450;
+                    break;
+                case GameDifficulty.hard:
+                    gameSpeed = 300;
+                    break;
+                default:
+                    gameSpeed = 600;
+                    break;
+            }
+
             while (gameItems.Count < 3)
             {
                 gameItems.Add(AddGameItems(gameOptions));
@@ -77,15 +93,21 @@ namespace SnakeGameProject
                     }
 
                     snakeRepo.AddSnake(snakeRepo.CreateNewHead(snakeRepo.GetSnake(0)));
-                } 
+                }
 
-                Thread.Sleep(300); // <- Needs to be set with the difficulty paramater #################################
+                Thread.Sleep(gameSpeed); // <- Needs to be set with the difficulty paramater #################################
                 Console.Clear();
             }
             Console.WriteLine("You DEAD!"); // Needs to implement Rochelles menu and replace lines 86 & 87
+
+            Console.WriteLine("Congratulations! You've achieved a high score. Please enter your name:");
+            var UserNameInput = Console.ReadLine();
+            string userScore = HighScore.ShowPlayerScore(UserNameInput, score);
+            Console.WriteLine("??");
+            Console.WriteLine($"{userScore}");
             Console.ReadLine();
         }
-      
+
         //Draw Game Board Methods
         private void DrawBoardTop(int boardWidth)
         {
@@ -109,15 +131,15 @@ namespace SnakeGameProject
 
                 for (int x = 1; x <= boardWidth; x++)
                 {
-                    bool isSnake = CheckForSnake(x,y);
-                    bool isFruit = CheckForFruit(x,y);
+                    bool isSnake = CheckForSnake(x, y);
+                    bool isFruit = CheckForFruit(x, y);
                     if (isSnake)
                     {
-                        row = row + GetSnakeIcon(x,y); 
+                        row = row + GetSnakeIcon(x, y);
                     }
                     else if (isFruit)
                     {
-                        row = row + GetFruitSymbol(x,y); 
+                        row = row + GetFruitSymbol(x, y);
                     }
                     else
                     {
@@ -224,7 +246,7 @@ namespace SnakeGameProject
             int yAxis = rndY.Next(1, gameOptions.BoardHeight + 1); //gameOptions.BoardHeight + 1 is the correct random code
             if (gameItems.Count == 0)
             {
-                ItemLocations firstItem = new ItemLocations(xAxis, yAxis, food.FoodType.ToString(), food.FoodCharacter, food.PointValue) ;
+                ItemLocations firstItem = new ItemLocations(xAxis, yAxis, food.FoodType.ToString(), food.FoodCharacter, food.PointValue);
                 return firstItem;
             }
             else
@@ -289,13 +311,13 @@ namespace SnakeGameProject
             }
             return false;
         } //There are two CheckForFruit Methods. <- Bool is used for scoring and removing fruit from the Game Board
-        private bool CheckCollision(Snake snake,GameOptions gameOptions)
+        private bool CheckCollision(Snake snake, GameOptions gameOptions)
         {
-            if (snake.XAxis <= 0 || snake.XAxis >=gameOptions.BoardWidth+1)
+            if (snake.XAxis <= 0 || snake.XAxis >= gameOptions.BoardWidth + 1)
             {
                 return true;
             }
-            if (snake.YAxis <= 0 || snake.YAxis >= gameOptions.BoardHeight+1)
+            if (snake.YAxis <= 0 || snake.YAxis >= gameOptions.BoardHeight + 1)
             {
                 return true;
             }
@@ -307,11 +329,11 @@ namespace SnakeGameProject
                     return true;
                 }
             }
-            
+
             return false;
 
         } //Hit a wall or the snake and you die
-       
+
         //Default Constructor
         public GameBoard()
         {
