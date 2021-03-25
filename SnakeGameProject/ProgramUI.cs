@@ -27,9 +27,9 @@ namespace SnakeGameProject
                     "3. Set Game Difficulty \n" +
                     "4. Show High Score \n" +
                     "5. Rules \n" +
-                    "6. Game Options \n" +
-                    "7. Authors \n" +
-                    "8. Exit");
+                    "6. Authors \n" +
+                    "7. Exit Game");
+
 
                 string userInput = Console.ReadLine();
 
@@ -115,10 +115,6 @@ namespace SnakeGameProject
                         Console.Clear();
                         break;
                     case "6":
-                        //game options
-                        Console.Clear();
-                        break;
-                    case "7":
                         Console.WriteLine("\n" + "AUTHORS: \n" +
                             "\n" +
                             "Jeff Deacon & Rochelle Deulley \n" +
@@ -129,11 +125,9 @@ namespace SnakeGameProject
                         Console.ReadKey();
                         Console.Clear();
                         break;
-                    case "8":
+                    case "7":
                         isRunning = false;
                         break;
-
-
 
                 }
             }
