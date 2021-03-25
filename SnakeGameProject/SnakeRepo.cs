@@ -18,10 +18,15 @@ namespace SnakeGameProject
         {
             _gameSnake.Insert(0, snake);
         }
+        public void RemoveWholeSnake()
+        {
+            _gameSnake.RemoveRange(0, _gameSnake.Count);
+        }
         public void RemoveSnake()
         {
             _gameSnake.Remove(GetSnake(_gameSnake.Count - 1));
         }
+
         public Snake CreateNewHead(Snake snake)
         {
             Snake newSnake = new Snake();
