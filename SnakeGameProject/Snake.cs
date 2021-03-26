@@ -17,20 +17,14 @@ namespace SnakeGameProject
         public char SnakeIcon { get; set; }
         //public List<ItemLocations> SnakeLocations { get; set; } = new List<ItemLocations>();
 
-        public Snake()
+        public Snake() //This could have an additional constructor for the CreateNewHead
         {
-
             Direction = MoveDirection.Right;
             //Length = 1;
             Score = 0;
             XAxis = 2;
             YAxis = 2;
             SnakeIcon = '$';
-        }
-        public Snake(int x, int y)
-        {
-            XAxis = x;
-            YAxis = y;
         }
     }
 }

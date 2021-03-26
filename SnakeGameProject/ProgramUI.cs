@@ -11,8 +11,7 @@ namespace SnakeGameProject
         GameBoard currentGame = new GameBoard();
         public GameOptions currentOptions = new GameOptions(GameBoardSize.small, GameDifficulty.easy);
 
-        string userName = "";
-        string userHighScore = "";
+
 
         public void RunApplication()
         {
@@ -25,10 +24,11 @@ namespace SnakeGameProject
                     $"1. Play on board size {currentOptions.BoardSize} at difficulty level {currentOptions.Difficulty}. \n" +
                     "2. Choose Board Size \n" +
                     "3. Set Game Difficulty \n" +
-                    "4. Show High Score \n" +
-                    "5. Rules \n" +
-                    "6. Authors \n" +
-                    "7. Exit Game");
+                    "4. Instructions \n" +
+                    "5. Show High Score \n" +
+                    "6. Rules \n" +
+                    "7. Authors \n" +
+                    "8. Exit Game");
                 string userInput = Console.ReadLine();
                 switch (userInput)
                 {
@@ -39,6 +39,7 @@ namespace SnakeGameProject
                         break;
                     case "2":
                         Console.Clear();
+                        Console.WriteLine("Choose Game Board Size:");
                         Console.WriteLine("1. Small \n" +
                             "2. Medium \n" +
                             "3. Large");
@@ -47,54 +48,75 @@ namespace SnakeGameProject
                         {
                             case "1":
                                 currentOptions.BoardSize = GameBoardSize.small;
-                                Console.Clear();
                                 break;
                             case "2":
                                 currentOptions.BoardSize = GameBoardSize.medium;
-                                Console.Clear();
                                 break;
                             case "3":
                                 currentOptions.BoardSize = GameBoardSize.large;
-                                Console.Clear();
                                 break;
                             default:
                                 break;
                         };
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         Console.Clear();
                         break;
                     case "3":
                         Console.Clear();
+                        Console.WriteLine("Choose Game Difficulty:");
                         Console.WriteLine("1. Easy \n" +
                             "2. Medium \n" +
                             "3. Hard");
-                        string userOption = Console.ReadLine();
-                        Console.Clear();
+                        string userOption = Console.ReadLine();                        
                         switch (userOption)
                         {
                             case "1":
                                 currentOptions.Difficulty = GameDifficulty.easy;
-                                Console.Clear();
                                 break;
                             case "2":
                                 currentOptions.Difficulty = GameDifficulty.medium;
-                                Console.Clear();
                                 break;
                             case "3":
                                 currentOptions.Difficulty = GameDifficulty.hard;
-                                Console.Clear();
                                 break;
                             default:
                                 break;
                         }
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         Console.Clear();
                         break;
                     case "4":
                         Console.Clear();
-                        Console.WriteLine($"Sessions Corrent Highscore: {HighScore.Score}");
+                        Console.WriteLine("INSTRUCTIONS: \n" +
+                            "\n" +
+                            "You will play the intolerably-hungry Blake the Snake. \n" +
+                            "\n" +
+                            "Consuming food will help Blake grow; it will also \n" +
+                            "increase your score. \n" +
+                            "\n" +
+                            "Use your keyboard arrow keys to move Blake up, down, \n" +
+                            "left, and right. \n" +
+                            "\n" +
+                            "GAME ENDING: \n" +
+                            "\n" +
+                            "If the snake hits the side of the board or runs into \n" +
+                            "himself, the game ends. \n" +
+                            "\n");
+                        Console.WriteLine("Press any key to return to the main menu...");
                         Console.ReadKey();
                         Console.Clear();
                         break;
                     case "5":
+                        Console.Clear();
+                        Console.WriteLine($"Sessions Corrent Highscore: {HighScore.Score} \n" +
+                            "\n");
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case "6":
                         Console.Clear();
                         Console.WriteLine("\n" + "RULES: \n" +
                             "\n" +
@@ -123,7 +145,7 @@ namespace SnakeGameProject
                         Console.ReadKey();
                         Console.Clear();
                         break;
-                    case "6":
+                    case "7":
                         Console.Clear();
                         Console.WriteLine("\n" + "AUTHORS: \n" +
                             "\n" +
@@ -138,9 +160,8 @@ namespace SnakeGameProject
                         Console.ReadKey();
                         Console.Clear();
                         break;
-                    case "7":
+                    case "8":
                         isRunning = false;
-                        Console.Clear();
                         break;
                 }
             }
