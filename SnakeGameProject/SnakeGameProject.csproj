@@ -47,7 +47,6 @@
     <Compile Include="GameBoard.cs" />
     <Compile Include="GameOptions.cs" />
     <Compile Include="HighScore.cs" />
-    <Compile Include="HighScoreRepo.cs" />
     <Compile Include="ItemLocations.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramUI.cs" />
