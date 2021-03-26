@@ -11,8 +11,7 @@ namespace SnakeGameProject
         GameBoard currentGame = new GameBoard();
         public GameOptions currentOptions = new GameOptions(GameBoardSize.small, GameDifficulty.easy);
 
-        string userName = "";
-        string userHighScore = "";
+
 
         public void RunApplication()
         {
@@ -40,6 +39,7 @@ namespace SnakeGameProject
                         break;
                     case "2":
                         Console.Clear();
+                        Console.WriteLine("Choose Game Board Size:");
                         Console.WriteLine("1. Small \n" +
                             "2. Medium \n" +
                             "3. Large");
@@ -64,11 +64,11 @@ namespace SnakeGameProject
                         break;
                     case "3":
                         Console.Clear();
+                        Console.WriteLine("Choose Game Difficulty:");
                         Console.WriteLine("1. Easy \n" +
                             "2. Medium \n" +
                             "3. Hard");
-                        string userOption = Console.ReadLine();
-                        Console.Clear();
+                        string userOption = Console.ReadLine();                        
                         switch (userOption)
                         {
                             case "1":
@@ -162,10 +162,6 @@ namespace SnakeGameProject
                         break;
                     case "8":
                         isRunning = false;
-                        Console.Clear();
-                        Console.WriteLine("Press any key to exit the game...");
-                        Console.ReadKey();
-                        Console.Clear();
                         break;
                 }
             }
