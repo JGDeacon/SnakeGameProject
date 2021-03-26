@@ -109,6 +109,7 @@ namespace SnakeGameProject
                     "You've achieved a high score!");
                 HighScore.Score = score;
             }
+            RemoveAllFood();
             snakeRepo.RemoveWholeSnake();
             score = 0;
             Console.ReadLine();
@@ -290,6 +291,20 @@ namespace SnakeGameProject
             }
 
         }
+        public void RemoveAllFood()
+        {
+            List<ItemLocations> deleteItems = new List<ItemLocations>();
+            foreach (ItemLocations item in gameItems)
+            {
+                    deleteItems.Add(item);
+            }
+            foreach (ItemLocations deleteItem in deleteItems)
+            {
+                gameItems.Remove(deleteItem);
+            }
+
+        }
+    
         private ItemLocations GetItem(int xAxis, int yAxis)
         {
             foreach (ItemLocations item in gameItems)
