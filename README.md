@@ -1,11 +1,11 @@
 # SnakeGameProject
 DESCRIPTION This console app game features a snake that grows as it consumes randomly-placed objects on the screen. Gain points and stay alive for as long as you can, while avoiding running into either the wall or yourself!
 
-TABLE OF CONTENTS 
+TABLE OF CONTENTS The SnakeRepo controls the execution of a variety of features in the classes: food, game board, game options, high score, item locations, snake, program, and program UI. This allows the console app game to function as intended. There is also a sound effect. Note: the high score class does not function as intended. The program is able to store the high score for the current user session only, but this data will not be stored for future games. 
 
 INSTALLATION Download this project into Visual Studio 2019.
 
-USAGE Utilize Visual Studio 2019 for this project.
+USAGE Utilize Visual Studio 2019 for this project
 
 CONTRIBUTING Jeff Deacon & Rochelle Deulley
 
